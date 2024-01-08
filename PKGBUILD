@@ -92,14 +92,14 @@ license=('custom')
 _sourceurl="mesa::git+${_mesa_source}${_mesa_version}"
 _mesa_srcdir="mesa"
 
-source=("$_sourceurl"
+source=(#"$_sourceurl"
         'LICENSE'
         'llvm32.native'
 )
-md5sums=('SKIP'
+md5sums=(#'SKIP'
          '5c65a0fe315dd347e09b1f2826a1df5a'
          '6b4a19068a323d7f90a3d3cd315ed1f9')
-sha512sums=('SKIP'
+sha512sums=(#'SKIP'
             '25da77914dded10c1f432ebcbf29941124138824ceecaf1367b3deedafaecabc082d463abcfa3d15abff59f177491472b505bcb5ba0c4a51bb6b93b4721a23c2'
             'c7dbb390ebde291c517a854fcbe5166c24e95206f768cc9458ca896b2253aabd6df12a7becf831998721b2d622d0c02afdd8d519e77dea8e1d6807b35f0166fe')
 
@@ -244,13 +244,19 @@ pkgver() {
 
 prepare() {
     # cleanups
-    cd "$srcdir/$_mesa_srcdir"
-    git reset --hard HEAD
-    git clean -xdf
-    if [ -n "$_mesa_commit" ]; then
-      git checkout "${_mesa_commit}"
+    # cd "$srcdir/$_mesa_srcdir"
+    # git reset --hard HEAD
+    # git clean -xdf
+    # if [ -n "$_mesa_commit" ]; then
+    #   git checkout "${_mesa_commit}"
+    # fi
+    # msg2 "Tree cleaned"
+    
+    if [ -e $srcdir/$_mesa_srcdir ]; then
+        rm $srcdir/$_mesa_srcdir
     fi
-    msg2 "Tree cleaned"
+    ln -sf $HOME/mesa $srcdir/$_mesa_srcdir
+    cd "$srcdir/$_mesa_srcdir"
 
     # copy userpatches inside the PKGBUILD's dir
     for _file in "$_where"/mesa-userpatches/*.mymesa*
@@ -258,11 +264,11 @@ prepare() {
         [ -e "$_file" ] && cp "$_file" "$_where"
     done
 
-    if [ -n "$_mesa_prs" ]; then
-      for _pr in ${_mesa_prs[@]}; do
-        wget -O "$_where"/"$_pr".mymesapatch https://gitlab.freedesktop.org/mesa/mesa/merge_requests/"$_pr".diff
-      done
-    fi
+    #if [ -n "$_mesa_prs" ]; then
+    #  for _pr in ${_mesa_prs[@]}; do
+    #    wget -O "$_where"/"$_pr".mymesapatch https://gitlab.freedesktop.org/mesa/mesa/merge_requests/"$_pr".diff
+    #  done
+    #fi
 
     # Community patches
     if [ -n "$_community_patches" ]; then
@@ -276,23 +282,23 @@ prepare() {
     fi
 
     # mesa user patches
-    if [ "$_user_patches" == "true" ]; then
-      _userpatch_target="mesa"
-      _userpatch_ext="mymesa"
-      echo -e "# Last ${pkgname} ${pkgver} configuration - $(date) :\n" > "$_where"/last_build_config.log
-      echo -e "DRI drivers: ${_dri_drivers}" >> "$_where"/last_build_config.log
-      echo -e "Gallium drivers: ${_gallium_drivers}" >> "$_where"/last_build_config.log
-      echo -e "Vulkan drivers: ${_vulkan_drivers}\n" >> "$_where"/last_build_config.log
-      user_patcher
-    fi
+    #if [ "$_user_patches" == "true" ]; then
+    #  _userpatch_target="mesa"
+    #  _userpatch_ext="mymesa"
+    #  echo -e "# Last ${pkgname} ${pkgver} configuration - $(date) :\n" > "$_where"/last_build_config.log
+    #  echo -e "DRI drivers: ${_dri_drivers}" >> "$_where"/last_build_config.log
+    #  echo -e "Gallium drivers: ${_gallium_drivers}" >> "$_where"/last_build_config.log
+    #  echo -e "Vulkan drivers: ${_vulkan_drivers}\n" >> "$_where"/last_build_config.log
+    #  user_patcher
+    #fi
 
     # Community/prs patches removal
-    for _p in ${_community_patches[@]}; do
-      rm -f "$_where"/$_p
-    done
-    for _pr in ${_mesa_prs[@]}; do
-      rm -f "$_where"/$_pr.mymesapatch
-    done
+    #for _p in ${_community_patches[@]}; do
+    #  rm -f "$_where"/$_p
+    #done
+    #for _pr in ${_mesa_prs[@]}; do
+    #  rm -f "$_where"/$_pr.mymesapatch
+    #done
 
     cd "$srcdir"
 
