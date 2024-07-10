@@ -472,7 +472,7 @@ build () {
        -D dri3=${_enabled_} \
        -D egl=${_enabled_} \
        -D gallium-extra-hud=true \
-       -D gallium-nine=true \
+       -D gallium-nine=false \
        -D gallium-omx=${_gallium_omx} \
        -D gallium-opencl=icd \
        -D gallium-va=${_gallium_va} \
@@ -534,7 +534,7 @@ build () {
           -D dri3=${_enabled_} \
           -D egl=${_enabled_} \
           -D gallium-extra-hud=true \
-          -D gallium-nine=true \
+          -D gallium-nine=false \
           -D gallium-omx=${_disabled_} \
           -D gallium-opencl=${_disabled_} \
           -D gallium-va=${_gallium_va} \
