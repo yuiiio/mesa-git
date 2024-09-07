@@ -469,7 +469,6 @@ build () {
        -D platforms=${_platforms} \
        -D gallium-drivers=${_gallium_drivers} \
        -D vulkan-drivers=${_vulkan_drivers} \
-       -D dri3=${_enabled_} \
        -D egl=${_enabled_} \
        -D gallium-extra-hud=true \
        -D gallium-nine=false \
@@ -531,7 +530,6 @@ build () {
           -D platforms=${_platforms} \
           -D gallium-drivers=${_gallium_drivers} \
           -D vulkan-drivers=${_vulkan_drivers} \
-          -D dri3=${_enabled_} \
           -D egl=${_enabled_} \
           -D gallium-extra-hud=true \
           -D gallium-nine=false \
